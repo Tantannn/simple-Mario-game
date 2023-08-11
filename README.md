@@ -6,6 +6,8 @@ Clone onto laptop:
    
 run:
 
+### `cd simple-Mario-game`
+
 ### `npm install`
 
 
