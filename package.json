@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "live-server": "^1.2.2",
     "pixi": "^0.3.1",
     "pixi.js": "^7.2.4"
   }

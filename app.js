@@ -10,16 +10,27 @@ app.renderer.view.style.position = "absolute";
 document.body.appendChild(app.view);
 
 let score = 0;
+let bottom = 0;
 
 const Graphics = PIXI.Graphics;
 
 /* class Mario {
-    constructor({position, velocity}) {
+  constructor(position, velocity, texture) {
+    super(texture);
     this.position = position;
     this.velocity = velocity;
   }
+  draw() {
+    this.beginFill(0xff0000);
+    this.drawRect(0, 0, 50, 50);
+    this.endFill();
+  }
 }
-const mario = new Mario(); */
+const mario1 = new Mario(0, 1);
+
+// app.stage.addChild(mario1);
+
+console.log(PIXI.Sprite, Graphics); */
 
 const mario = new Graphics();
 mario
@@ -97,12 +108,10 @@ spaceShipSprite.position.set(100, 50);
 spaceShipSprite.scale.x = 0.5;
 spaceShipSprite.scale.y = 0.5;
 spaceShipSprite.rotation = 1.5;
-
-app.ticker.add((delta) => {
-  // console.log(score)
+console.log(app.ticker.update());
+app.ticker.add((deltaMS) => {
   /* text.x = Math.random() * app.screen.width;
   text.y = Math.random() * app.screen.height; */
-console.log(mario.y)
   spaceShipSprite.x += 1;
   if (circle.position.y < floor.position.y / 2) {
     circle.y += 2;
@@ -117,8 +126,10 @@ console.log(mario.y)
   if (keys.a) {
     mario.x -= 5;
   }
-  if (keys.w) {
-    mario.y -= 20;
+  if (keys.w) { mario.y -= 20
+const time = setTimeout(() => {keys.w = false
+console.log(keys)
+    }, 230);
   }
   if (rectsIntersectPlatform(mario, rectangle2)) {
     mario.y -= 10;
@@ -139,10 +150,9 @@ console.log(mario.y)
     app.stage.removeChild(coin3);
   }
   score = app.stage.children.length;
-  updateScore(11-score);
+  updateScore(11 - score);
 });
 
-console.log(score);
 mario.buttonMode = true;
 mario.interactive = true;
 /* rectangle.on("pointerdown", () => {
@@ -189,3 +199,19 @@ const rectsIntersectCoin = (a, b) => {
 const updateScore = (score) => {
   text.text = `Score: ${score}`;
 };
+
+/* const jump = (second) => {
+  bottom = mario.y + 20
+  mario.y -= 20
+  console.log( mario.y, bottom);
+}; */
+
+
+
+const jump = () => {
+
+const time = setTimeout(() => { mario.y -= 20}, 50);
+  
+
+
+}
