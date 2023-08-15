@@ -28,8 +28,12 @@ class Rect {
     app.stage.addChild(this.shape);
   }
   hit() {
-    if (rectsIntersectPlatform(mario, this.shape)) {
-       (mario.y -= 10);
+    if (rectsIntersect(mario, this.shape)) {
+      if (rectsIntersectPlatform(mario, this.shape)) {
+        return mario.y -= 10;
+      } else if (rectsIntersectDown(mario, this.shape)) {
+        mario.y += 10;
+      }
     }
   }
 }
@@ -49,8 +53,8 @@ class Coin {
     app.stage.addChild(this.shape);
   }
   hit() {
-    if (rectsIntersectCoin(mario, this.shape)) {
-     app.stage.removeChild(this.shape);
+    if (rectsIntersect(mario, this.shape)) {
+      app.stage.removeChild(this.shape);
     }
   }
 }
@@ -71,9 +75,9 @@ rectangle1.draw();
 rectangle2.draw();
 rectangle3.draw();
 
-const coin1 = new Coin({position: {x: 150, y: 425}, size: 25});
-const coin2 = new Coin({position: {x: 350, y: 350}, size: 25});
-const coin3 = new Coin({position: {x: 550, y: 275}, size: 25});
+const coin1 = new Coin({ position: { x: 150, y: 425 }, size: 25 });
+const coin2 = new Coin({ position: { x: 350, y: 350 }, size: 25 });
+const coin3 = new Coin({ position: { x: 550, y: 275 }, size: 25 });
 coin1.draw();
 coin2.draw();
 coin3.draw();
@@ -92,10 +96,7 @@ floor
   .drawRect(0, 0, 5000, 50)
   .endFill();
 
-app.stage.addChild(
-  mario,
-  floor,
-);
+app.stage.addChild(mario, floor);
 
 mario.position.set(0, 0);
 floor.position.set(0, 550);
@@ -140,9 +141,9 @@ app.ticker.add((delta) => {
   }
   if (keys.w) {
     mario.y -= 20;
-    const time = setTimeout(() => {
+    /* const time = setTimeout(() => {
       keys.w = false;
-    }, 230);
+    }, 230); */
   }
   rectangle1.hit();
   rectangle2.hit();
@@ -171,13 +172,31 @@ const rectsIntersectPlatform = (a, b) => {
   let aBox = a.getBounds();
   let bBox = b.getBounds();
   return (
-    aBox.x + aBox.width > bBox.x &&
-    aBox.x < bBox.x + bBox.width &&
-    aBox.y + aBox.height - 18 <= bBox.y &&
-    aBox.y + aBox.height - 10 >= bBox.y
+    aBox.y + aBox.height - 18 <= bBox.y && aBox.y + aBox.height - 10 >= bBox.y
   );
 };
-const rectsIntersectCoin = (a, b) => {
+const rectsIntersectDown = (a, b) => {
+  let aBox = a.getBounds();
+  let bBox = b.getBounds();
+  return (
+    aBox.y + aBox.height - 8 >= bBox.y  
+  );
+};
+const rectsIntersectLeft = (a, b) => {
+  let aBox = a.getBounds();
+  let bBox = b.getBounds();
+  return (
+    aBox.y + aBox.height - 18 >= bBox.y && aBox.y + aBox.height - 10 >= bBox.y
+  );
+};
+const rectsIntersectRight = (a, b) => {
+  let aBox = a.getBounds();
+  let bBox = b.getBounds();
+  return (
+    aBox.y + aBox.height - 18 <= bBox.y && aBox.y + aBox.height - 10 >= bBox.y
+  );
+};
+const rectsIntersect = (a, b) => {
   let aBox = a.getBounds();
   let bBox = b.getBounds();
   return (
@@ -188,16 +207,9 @@ const rectsIntersectCoin = (a, b) => {
   );
 };
 
-
 const updateScore = (score) => {
   text.text = `Score: ${score}`;
 };
-
-/* const jump = (second) => {
-  bottom = mario.y + 20
-  mario.y -= 20
-  console.log( mario.y, bottom);
-}; */
 
 const jump = () => {
   const time = setTimeout(() => {
